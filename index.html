@@ -3,71 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اسأل الشيخ الذكي AI - حلمي الغريب الازهر</title>
-    <meta name="description" content="موقع اسأل الشيخ الذكي. اسأل اي سؤال ديني وهيرد عليك بالدليل من القران والسنة">
+    <title>الشيخ AI المتحرك - حلمي الغريب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        body { background: #f0f8ff; color: #333; }
-        .header { background: #0d5c63; color: white; padding: 20px; text-align: center; }
-        .header h1 { font-size: 28px; }
-        .chat-box { max-width: 800px; margin: 20px auto; background: white; border-radius: 15px; padding: 20px; min-height: 400px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .message { margin: 15px 0; padding: 12px; border-radius: 10px; }
-        .user { background: #e0f2f1; text-align: left; }
-        .bot { background: #fff3e0; text-align: right; }
-        .input-area { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; }
-        input { flex: 1; padding: 15px; border: 2px solid #0d5c63; border-radius: 10px; font-size: 16px; }
-        button { padding: 15px 30px; background: #0d5c63; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #094a50; }
+        body { background: #000; overflow: hidden; color: white; }
+        
+        /* الخلفية المتحركة */
+        .bg { position: fixed; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #0d5c63 0%, #000 100%); }
+        .light { position: absolute; width: 4px; height: 4px; background: #44a1a0; border-radius: 50%; animation: fall 10s infinite linear; box-shadow: 0 0 10px #44a1a0; }
+        @keyframes fall { 0% { transform: translateY(-100px); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(100vh); opacity: 0; } }
+        
+        .container { position: relative; z-index: 10; max-width: 900px; margin: 0 auto; padding: 20px; }
+        
+        /* الشيخ المتحرك */
+        .sheikh { text-align: center; margin: 30px 0; animation: glow 2s infinite alternate; }
+        .sheikh-emoji { font-size: 120px; display: inline-block; animation: float 3s infinite ease-in-out; }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes glow { 0% { text-shadow: 0 0 10px #44a1a0; } 100% { text-shadow: 0 0 40px #44a1a0, 0 0 60px #0d5c63; } }
+        
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { font-size: 40px; color: #44a1a0; }
+        
+        /* الاسئلة الطايرة */
+        .floating-questions { position: fixed; width: 100%; height: 100%; pointer-events: none; }
+        .q-bubble { position: absolute; background: rgba(68,161,160,0.3); border: 2px solid #44a1a0; padding: 10px 20px; border-radius: 30px; font-size: 14px; animation: bubble 15s infinite linear; }
+        @keyframes bubble { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100px) scale(1.2); opacity: 0; } }
+        
+        /* الشات */
+        .chat-box { background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); border: 2px solid #44a1a0; border-radius: 25px; padding: 20px; height: 400px; overflow-y: auto; margin-bottom: 20px; }
+        .message { margin: 15px 0; padding: 15px; border-radius: 15px; animation: pop 0.5s; }
+        @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .user { background: linear-gradient(90deg, #44a1a0, #0d5c63); margin-left: 15%; }
+        .bot { background: linear-gradient(90deg, #ff9800, #ff5722); margin-right: 15%; }
+        
+        .input-area { display: flex; gap: 10px; }
+        input { flex: 1; padding: 18px; border: 3px solid #44a1a0; border-radius: 15px; font-size: 18px; background: rgba(0,0,0,0.5); color: white; }
+        button { padding: 18px 40px; background: linear-gradient(90deg, #44a1a0, #0d5c63); color: white; border: none; border-radius: 15px; cursor: pointer; font-size: 18px; font-weight: 900; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🤖 اسأل الشيخ الذكي AI</h1>
-        <p>مقدم من: حلمي الغريب - الازهر الشريف</p>
-    </div>
+    <div class="bg" id="bg"></div>
+    <div class="floating-questions" id="floatQ"></div>
 
-    <div class="chat-box" id="chatBox">
-        <div class="message bot">
-            السلام عليكم ورحمة الله 👋<br>
-            انا الشيخ الذكي. اسألني اي سؤال ديني وهجاوبك ان شاء الله
+    <div class="container">
+        <div class="sheikh">
+            <div class="sheikh-emoji">🧔🤖</div>
+            <h2 style="color:#44a1a0">الشيخ AI ينورلك الطريق</h2>
+        </div>
+
+        <div class="header">
+            <h1>اسأل الشيخ الذكي</h1>
+            <p>مقدم من: حلمي الغريب - الازهر الشريف</p>
+        </div>
+
+        <div class="chat-box" id="chatBox">
+            <div class="message bot">السلام عليكم ورحمة الله 👋 انا الشيخ AI المتحرك. اسألني وهتلاقي الدنيا بتنور</div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="اكتب سؤالك هنا...">
+            <button onclick="sendMessage()">ارسال ✨</button>
         </div>
     </div>
 
-    <div class="input-area">
-        <input type="text" id="userInput" placeholder="اكتب سؤالك هنا... مثال: حكم الصيام في السفر">
-        <button onclick="sendMessage()">ارسال</button>
-    </div>
-
     <script>
+        // عمل انوار بتقع
+        for(let i=0; i<50; i++) {
+            let light = document.createElement('div');
+            light.className = 'light';
+            light.style.left = Math.random()*100 + '%';
+            light.style.animationDelay = Math.random()*10 + 's';
+            document.getElementById('bg').appendChild(light);
+        }
+
+        // اسئلة طايرة
+        const sampleQ = ['ما حكم الصلاة؟', 'كيف اتوب؟', 'فضل القران؟', 'حكم الزكاة؟', 'بر الوالدين؟'];
+        setInterval(() => {
+            let bubble = document.createElement('div');
+            bubble.className = 'q-bubble';
+            bubble.textContent = sampleQ[Math.floor(Math.random()*sampleQ.length)];
+            bubble.style.left = Math.random()*80 + '%';
+            bubble.style.animationDuration = 10 + Math.random()*10 + 's';
+            document.getElementById('floatQ').appendChild(bubble);
+            setTimeout(() => bubble.remove(), 20000);
+        }, 3000);
+
+        // قاعدة الاسئلة
+        const knowledgeBase = [
+            {key: ['صلاة'], ans: 'الصلاة نور. <br> قال تعالى: ان الصلاة كانت على المؤمنين كتابا موقوتا'},
+            {key: ['صيام'], ans: 'الصيام يهذب النفس.<br> قال تعالى: كتب عليكم الصيام'},
+            {key: ['زكاة'], ans: 'الزكاة تطهر المال. نسبتها 2.5%'},
+            {key: ['توبة'], ans: 'باب التوبة مفتوح 24 ساعة.<br> قال تعالى: لا تقنطوا من رحمة الله'},
+            {key: ['default'], ans: 'سؤال قيم. انصحك بسؤال علماء الازهر.<br> قال تعالى: فاسألوا اهل الذكر'}
+        ];
+
         function sendMessage() {
             const input = document.getElementById('userInput');
             const chatBox = document.getElementById('chatBox');
-            const question = input.value;
-            if(question.trim() === '') return;
+            const question = input.value.trim();
+            if(question === '') return;
 
-            // اضافة سؤال المستخدم
             chatBox.innerHTML += `<div class="message user">${question}</div>`;
-            
-            // رد تلقائي من "الذكاء الصناعي"
-            let answer = "هذا سؤال مهم. الاجابة تحتاج لمراجعة من اهل العلم. انصحك بمراجعة كتب الفقه او سؤال شيخ من الازهر الشريف. قال تعالى: فاسألوا اهل الذكر ان كنتم لا تعلمون";
-            
-            if(question.includes('صلاة')) answer = "الصلاة ركن من اركان الاسلام. قال تعالى: ان الصلاة كانت على المؤمنين كتابا موقوتا";
-            if(question.includes('صيام')) answer = "الصيام فرض في رمضان. وللمسافر والمريض رخصة. قال تعالى: فمن كان منكم مريضا او على سفر فعدة من ايام اخر";
-            if(question.includes('زكاة')) answer = "الزكاة ركن. نصابها 2.5% من المال الذي حال عليه الحول وبلغ النصاب";
+            input.value = '';
+
+            let answer = knowledgeBase.find(x => x.key.includes('default')).ans;
+            for(let item of knowledgeBase) {
+                if(item.key.some(k => question.includes(k))) { answer = item.ans; break; }
+            }
 
             setTimeout(() => {
-                chatBox.innerHTML += `<div class="message bot">${answer}</div>`;
+                chatBox.innerHTML += `<div class="message bot">✨ ${answer}</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             }, 800);
-
-            input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
         }
-        
-        // ارسال بالانتر
-        document.getElementById('userInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') sendMessage();
-        });
+
+        document.getElementById('userInput').addEventListener('keypress', e => { if(e.key === 'Enter') sendMessage(); });
     </script>
 </body>
 </html>
