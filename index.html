@@ -121,6 +121,148 @@
         }
 
         document.getElementById('userInput').addEventListener('keypress', e => { if(e.key === 'Enter') sendMessage(); });
-    </script>
+    </script><!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الشيخ AI Pro - حلمي الغريب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --grad1: #667eea;
+            --grad2: #764ba2;
+            --glass: rgba(255,255,255,0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
+        body { 
+            background: linear-gradient(135deg, var(--grad1), var(--grad2)); 
+            min-height: 100vh; 
+            padding: 20px;
+        }
+
+        /* كارت زجاجي */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            font-size: 45px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #fff, #a18cd1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s infinite;
+        }
+        @keyframes shine { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.5); } }
+
+        .main-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 25px;
+        }
+
+        .chat-area { padding: 25px; }
+        .chat-box {
+            height: 500px;
+            overflow-y: auto;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .chat-box::-webkit-scrollbar { width: 8px; }
+        .chat-box::-webkit-scrollbar-thumb { background: var(--grad1); border-radius: 10px; }
+
+        .message {
+            padding: 18px;
+            border-radius: 20px;
+            margin: 15px 0;
+            max-width: 80%;
+            animation: slideIn 0.4s ease;
+        }
+        @keyframes slideIn { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .user-msg { background: linear-gradient(135deg, var(--grad1), var(--grad2)); margin-right: auto; }
+        .bot-msg { background: rgba(255,255,255,0.15); margin-left: auto; }
+
+        .input-area { display: flex; gap: 12px; }
+        input {
+            flex: 1;
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.9);
+            font-size: 17px;
+        }
+        .send-btn {
+            padding: 20px 45px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            font-size: 18px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .send-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+        /* الشريط الجانبي */
+        .sidebar { padding: 25px; }
+        .sidebar h3 { color: white; margin-bottom: 15px; font-size: 22px; }
+        .quick-btn {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: right;
+            font-size: 16px;
+        }
+        .quick-btn:hover { background: rgba(255,255,255,0.3); transform: translateX(-5px); }
+
+        @media(max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="glass-card header">
+        <h1>🤖 الشيخ AI Pro</h1>
+        <p style="color:white; font-size:18px;">مقدم من: حلمي الغريب - الازهر الشريف</p>
+    </div>
+
+    <div class="main-grid">
+        <div class="glass-card chat-area">
+            <div class="chat-box" id="chatBox">
+                <div class="message bot-msg">
+                    السلام عليكم 👋<br>
+                    انا النسخة الجديدة من الشيخ AI. اسألني اي سؤال
+                </div>
+            </div>
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="اسأل سؤالك الديني هنا...">
+                <button class="send-btn" onclick="sendMessage()">ارسال</button>
+            </div>
+        </div>
+
+        <div class="glass-card sidebar">
+            <h3>📚 اسئلة سريعة</h3>
+            <button class="quick-btn" onclick="ask('ما حكم الصلاة؟')">حكم الصلاة</button>
+            <button class="quick-btn" onclick="ask('كيف اتوب الى الله؟')">كيف اتوب</button>
+            <button class="quick-btn" onclick="ask('ما فضل قراءة القران؟')">فضل القران</button>
+            <button class="quick-btn" onclick="ask('ما هي اركان الاسلام؟')">اركان الاسلام</button>
+            <button class="quick-btn" onclick="ask('حكم الزكاة؟')">حكم الزكاة</
 </body>
 </html>
