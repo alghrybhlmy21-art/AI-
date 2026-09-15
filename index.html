@@ -44,6 +44,30 @@
     </style>
 </head>
 <body>
+    function sendMessage() {
+    const input = document.getElementById('userInput');
+    const chatBox = document.getElementById('chatBox');
+    const q = input.value.trim();
+    if(q === '') return;
+
+    // 1. ضيف سؤال المستخدم
+    chatBox.innerHTML += `<div class="message user-msg">${q}</div>`;
+    input.value = '';
+
+    // 2. انزل تحت فورا بعد سؤالك
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    let ans = knowledgeBase.find(x => x.key.includes('default')).ans;
+    for(let item of knowledgeBase) {
+        if(item.key.some(k => q.includes(k))) { ans = item.ans; break; }
+    }
+
+    // 3. بعد ما الرد يجي انزل تحت تاني
+    setTimeout(() => {
+        chatBox.innerHTML += `<div class="message bot-msg">${ans}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight; // دي اهم سطر
+    }, 600);
+}
     <div class="bg" id="bg"></div>
     <div class="floating-questions" id="floatQ"></div>
 
