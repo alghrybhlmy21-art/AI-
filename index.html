@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اسأل الشيخ الذكي AI - حلمي الغريب الازهر</title>
+    <meta name="description" content="موقع اسأل الشيخ الذكي. اسأل اي سؤال ديني وهيرد عليك بالدليل من القران والسنة">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background: #f0f8ff; color: #333; }
+        .header { background: #0d5c63; color: white; padding: 20px; text-align: center; }
+        .header h1 { font-size: 28px; }
+        .chat-box { max-width: 800px; margin: 20px auto; background: white; border-radius: 15px; padding: 20px; min-height: 400px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .message { margin: 15px 0; padding: 12px; border-radius: 10px; }
+        .user { background: #e0f2f1; text-align: left; }
+        .bot { background: #fff3e0; text-align: right; }
+        .input-area { max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; }
+        input { flex: 1; padding: 15px; border: 2px solid #0d5c63; border-radius: 10px; font-size: 16px; }
+        button { padding: 15px 30px; background: #0d5c63; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #094a50; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 اسأل الشيخ الذكي AI</h1>
+        <p>مقدم من: حلمي الغريب - الازهر الشريف</p>
+    </div>
+
+    <div class="chat-box" id="chatBox">
+        <div class="message bot">
+            السلام عليكم ورحمة الله 👋<br>
+            انا الشيخ الذكي. اسألني اي سؤال ديني وهجاوبك ان شاء الله
+        </div>
+    </div>
+
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="اكتب سؤالك هنا... مثال: حكم الصيام في السفر">
+        <button onclick="sendMessage()">ارسال</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const chatBox = document.getElementById('chatBox');
+            const question = input.value;
+            if(question.trim() === '') return;
+
+            // اضافة سؤال المستخدم
+            chatBox.innerHTML += `<div class="message user">${question}</div>`;
+            
+            // رد تلقائي من "الذكاء الصناعي"
+            let answer = "هذا سؤال مهم. الاجابة تحتاج لمراجعة من اهل العلم. انصحك بمراجعة كتب الفقه او سؤال شيخ من الازهر الشريف. قال تعالى: فاسألوا اهل الذكر ان كنتم لا تعلمون";
+            
+            if(question.includes('صلاة')) answer = "الصلاة ركن من اركان الاسلام. قال تعالى: ان الصلاة كانت على المؤمنين كتابا موقوتا";
+            if(question.includes('صيام')) answer = "الصيام فرض في رمضان. وللمسافر والمريض رخصة. قال تعالى: فمن كان منكم مريضا او على سفر فعدة من ايام اخر";
+            if(question.includes('زكاة')) answer = "الزكاة ركن. نصابها 2.5% من المال الذي حال عليه الحول وبلغ النصاب";
+
+            setTimeout(() => {
+                chatBox.innerHTML += `<div class="message bot">${answer}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 800);
+
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+        
+        // ارسال بالانتر
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
