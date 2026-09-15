@@ -2,146 +2,168 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الشيخ AI PRO MAX ULTRA - حلمي الغريب</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<title>الشيخ AI DESIGN - حلمي الغريب</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root{--g1:#0d5c63;--g2:#44a1a0;--gold:#ffc107}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal'}
 body{background:linear-gradient(135deg,var(--g1),var(--g2));min-height:100vh;padding:10px;color:#fff;transition:0.5s}
-.header{text-align:center;padding:20px;background:rgba(255,255,255,0.1);border-radius:20px;margin-bottom:15px;border:2px solid var(--gold);animation:borderGlow 3s infinite}
-@keyframes borderGlow{0%,100%{box-shadow:0 0 20px var(--gold)}50%{box-shadow:0 0 30px #fff}}
-.header h1{font-size:32px;font-weight:900;text-shadow:0 0 10px var(--gold)}
-.header p{color:var(--gold);font-weight:700}
-.container{display:grid;grid-template-columns:1fr 340px;gap:15px}
-.chat,.side{background:rgba(255,255,255,0.12);backdrop-filter:blur(15px);border-radius:20px;padding:20px}
-.chat-box{height:420px;overflow-y:auto;margin-bottom:15px}
-.msg{padding:14px;border-radius:15px;margin:10px 0;animation:slide.4s}
-@keyframes slide{from{transform:translateX(30px);opacity:0}}
-.user{background:var(--g1);margin-right:auto;width:85%}
-.bot{background:#fff;color:#000;margin-left:auto;width:85%;border-left:4px solid var(--gold)}
-.ayah{color:var(--g1);font-weight:700;display:block;margin-top:5px}
-input{width:55%;padding:14px;border:none;border-radius:12px;font-size:16px}
-button{padding:14px;border:none;border-radius:12px;background:var(--gold);font-weight:900;cursor:pointer;transition:0.3s}
-button:hover{transform:scale(1.05)}
+
+/* الحواف بتنور */
+.container{border:3px solid var(--gold);border-radius:25px;padding:15px;animation:borderGlow 2s infinite}
+@keyframes borderGlow{0%,100%{box-shadow:0 0 15px var(--gold), inset 0 0 15px var(--gold)}50%{box-shadow:0 0 30px #fff, inset 0 0 30px #fff}}
+
+.header{text-align:center;padding:20px;position:relative}
+.header h1{font-size:34px;font-weight:900;text-shadow:0 0 10px var(--gold)}
+/* زرار ليلي نهاري فوق */
+.theme-btn{position:absolute;left:0;top:0;background:var(--gold);border:none;border-radius:50%;width:50px;height:50px;font-size:24px;cursor:pointer}
+
+/* الاستيكرات بتتحرك */
+.sticker{position:fixed;font-size:40px;animation:float 4s ease-in-out infinite;opacity:0.3;z-index:-1}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+.s1{top:10%;right:5%}.s2{top:50%;left:3%;animation-delay:1s}.s3{bottom:10%;right:10%;animation-delay:2s}
+
+.main-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}
+.big-btn{background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border:2px solid var(--gold);border-radius:20px;padding:25px;text-align:center;cursor:pointer;transition:0.4s;font-size:20px;font-weight:900}
+.big-btn:hover{transform:scale(1.08);background:rgba(255,255,255,0.25);box-shadow:0 0 25px var(--gold)}
+
+.chat-box{height:300px;overflow-y:auto;background:rgba(0,0,0,0.2);border-radius:15px;padding:15px;margin:15px 0}
+.msg{padding:12px;border-radius:12px;margin:8px 0}
+.user{background:var(--g1);width:80%;margin-right:auto}
+.bot{background:#fff;color:#000;width:80%;margin-left:auto;border-left:4px solid var(--gold)}
+input{width:70%;padding:14px;border:none;border-radius:12px}
+button{padding:14px;border:none;border-radius:12px;background:var(--gold);font-weight:900;cursor:pointer}
 .mic{background:#ff5722;color:#fff}
-.side h3{color:var(--gold);margin:12px 0;font-size:18px}
-.side button{width:100%;margin:5px 0;background:rgba(255,255,255,0.15);color:#fff;text-align:right}
-.dark{filter:invert(1) hue-rotate(180deg)}
-.quiz-btn{width:100%;margin:5px 0;background:rgba(255,255,255,0.2)}
-#stats{font-size:14px;color:var(--gold)}
+
+.dark{background:#0a0a0a!important;filter:invert(1) hue-rotate(180deg)}
+.page{display:none}
+.page.active{display:block}
 </style>
 </head>
 <body id="body">
-<div class="header">
-  <h1>🧔🤖 الشيخ AI PRO MAX ULTRA</h1>
-  <p>مقدم من: حلمي الغريب - خادم القرآن بالأزهر | 25 ميزة</p>
-</div>
+
+<!-- استيكرات دينية بتتحرك -->
+<div class="sticker s1">📿</div>
+<div class="sticker s2">🕌</div>
+<div class="sticker s3">🌙</div>
 
 <div class="container">
-  <div class="chat">
-    <div class="chat-box" id="chat">
-      <div class="msg bot">السلام عليكم 👋 جاهز؟ عندنا 25 ميزة. اسأل او استخدم الجنب</div>
+  <div class="header">
+    <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+    <h1>🧔🤖 الشيخ AI</h1>
+    <p>مقدم من: حلمي الغريب</p>
+  </div>
+
+  <!-- الصفحة الرئيسية - ازرار -->
+  <div id="home" class="page active">
+    <div class="main-grid">
+      <div class="big-btn" onclick="showPage('chat')">💬 الاسئلة والفتاوى</div>
+      <div class="big-btn" onclick="showPage('azkar')">🤲 الاذكار</div>
+      <div class="big-btn" onclick="showPage('quran')">📖 القرآن</div>
+      <div class="big-btn" onclick="showPage('dua')">🙏 الدعوات</div>
+      <div class="big-btn" onclick="showPage('tools')">⚡ ادوات اسلامية</div>
+      <div class="big-btn" onclick="showPage('games')">🏆 العاب وتحدي</div>
     </div>
-    <input id="q" placeholder="اسأل سؤال... او دوس 🎤">
+  </div>
+
+  <!-- صفحة الاسئلة -->
+  <div id="chat" class="page">
+    <button onclick="showPage('home')">⬅️ رجوع</button>
+    <h2>اسأل الشيخ AI</h2>
+    <div class="chat-box" id="chatBox">
+      <div class="msg bot">السلام عليكم اسألني</div>
+    </div>
+    <input id="q" placeholder="اكتب سؤالك">
     <button onclick="send()">ارسال</button>
     <button class="mic" onclick="startVoice()">🎤</button>
   </div>
 
-  <div class="side">
-    <h3>⚡ الحياة اليومية</h3>
-    <button onclick="showPrayer()">11. مواقيت الصلاة</button>
-    <button onclick="showQibla()">12. اتجاه القبلة</button>
-    <button onclick="showZakat()">13. حاسبة الزكاة</button>
-    <button onclick="showNames()">14. اسماء الله الحسنى</button>
-    <button onclick="showDua()">15. دعاء لكل موقف</button>
-
-    <h3>🏆 تفاعل والعاب</h3>
-    <button onclick="startQuiz()">2. تحدي الحفظ</button>
-    <button onclick="fastFatwa()">3. فتوى سريعة</button>
-    <button onclick="story()">4. قصة وعبرة</button>
-    <button onclick="kidsMode()">5. وضع الاطفال</button>
-    <button onclick="answerHour()">1. ساعة الاجابة</button>
-
-    <h3>📖 القرآن</h3>
-    <button onclick="searchQuran()">6. البحث في القران</button>
-    <button onclick="khatma()">7. ختمة جماعية</button>
-    <button onclick="tafsir()">8. تفسير الاية</button>
-    <button onclick="wird()">9. ورد اليوم</button>
-    <button onclick="roquia()">10. رقية شرعية</button>
-    <button onclick="smartKhatma()">23. ختمة ذكية</button>
-
-    <h3>🤝 سوشيال</h3>
-    <button onclick="showCard()">16. بطاقة دعوية</button>
-    <button onclick="askSheikh()">17. اسأل الشيخ</button>
-    <button onclick="showStats()">18. احصائياتك</button>
-    <button onclick="toggleDark()">19. الوضع الليلي</button>
-    <button onclick="azhar()">20. ملتقى الازهر</button>
-
-    <h3>🚀 بونص</h3>
-    <button onclick="videoFatwa()">21. فتوى بالفيديو</button>
-    <button onclick="dailyQuiz()">22. اختبر معلوماتك</button>
-    <button onclick="prophetStory()">25. قصص الانبياء</button>
-
-    <h3>🤲 اذكار</h3>
+  <!-- صفحة الاذكار -->
+  <div id="azkar" class="page">
+    <button onclick="showPage('home')">⬅️ رجوع</button>
+    <h2>🤲 الاذكار</h2>
     <button onclick="zikr('صباح')">اذكار الصباح</button>
     <button onclick="zikr('مساء')">اذكار المساء</button>
     <button onclick="zikr('نوم')">اذكار النوم</button>
-    <p id="stats"></p>
   </div>
+
+  <!-- صفحة القران -->
+  <div id="quran" class="page">
+    <button onclick="showPage('home')">⬅️ رجوع</button>
+    <h2>📖 القرآن</h2>
+    <button onclick="searchQuran()">البحث في القران</button>
+    <button onclick="smartKhatma()">ختمة ذكية</button>
+    <button onclick="wird()">ورد اليوم</button>
+  </div>
+
+  <!-- صفحة الدعوات -->
+  <div id="dua" class="page">
+    <button onclick="showPage('home')">⬅️ رجوع</button>
+    <h2>🙏 الدعوات</h2>
+    <button onclick="showDua('السفر')">دعاء السفر</button>
+    <button onclick="showDua('الهم')">دعاء الهم</button>
+    <button onclick="showDua('الركوب')">دعاء الركوب</button>
+  </div>
+
+  <!-- صفحة الادوات -->
+  <div id="tools" class="page">
+    <button onclick="showPage('home')">⬅️ رجوع</button>
+    <h2>⚡ ادوات اسلامية</h2>
+    <button onclick="showPrayer()">مواقيت الصلاة</button>
+    <button onclick="showQibla()">اتجاه القبلة</button>
+    <button onclick="showZakat()">حاسبة الزكاة</button>
+    <button onclick="showNames()">اسماء الله الحسنى</button>
+  </div>
+
+  <!-- صفحة الالعاب -->
+  <div id="games" class="page">
+    <button onclick="showPage('home')">⬅️ رجوع</button>
+    <h2>🏆 العاب وتحدي</h2>
+    <button onclick="startQuiz()">تحدي الحفظ</button>
+    <button onclick="dailyQuiz()">اختبر معلوماتك</button>
+    <button onclick="story()">قصة وعبرة</button>
+  </div>
+
 </div>
 
 <script>
-// قاعدة بيانات 100 سؤال
-const KB=[...100 سؤال مختصرين...
-{k:['صلاة'],a:'الصلاة عماد الدين<span class="ayah">ان الصلاة كانت على المؤمنين كتابا موقوتا</span>'},
-{k:['صيام'],a:'الصيام ركن<span class="ayah">كتب عليكم الصيام</span>'},
-{k:['default'],a:'ارجع لاهل العلم في الازهر'}];
-
+const KB=[{k:['صلاة'],a:'الصلاة عماد الدين'},{k:['default'],a:'ارجع لاهل العلم'}];
 const AZ={صباح:'اصبحنا واصبح الملك لله',مساء:'امسينا وامسى الملك لله',نوم:'باسمك ربي وضعت جنبي'};
 const DUAS={'السفر':'سبحان الذي سخر لنا','الهم':'اللهم اني اعوذ بك من الهم','الركوب':'بسم الله'};
 
-// الاحصائيات 18
-let stats = JSON.parse(localStorage.getItem('stats')||'{"q":0,"score":0}');
-function updateStats(){stats.q++; localStorage.setItem('stats',JSON.stringify(stats)); document.getElementById('stats').innerText=`سألت: ${stats.q} سؤال`}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
-function speak(t){let u=new SpeechSynthesisUtterance(t.replace(/<[^>]*>/g,''));u.lang='ar-SA';speechSynthesis.speak(u)}
+function toggleTheme(){
+  document.getElementById('body').classList.toggle('dark');
+  document.querySelector('.theme-btn').innerText = document.getElementById('body').classList.contains('dark')?'☀️':'🌙';
+}
+
+function speak(t){let u=new SpeechSynthesisUtterance(t);u.lang='ar-SA';speechSynthesis.speak(u)}
 function send(){
-  let v=document.getElementById('q').value; if(!v)return; updateStats();
-  document.getElementById('chat').innerHTML+=`<div class="msg user">${v}</div>`;
+  let v=document.getElementById('q').value; if(!v)return;
+  document.getElementById('chatBox').innerHTML+=`<div class="msg user">${v}</div>`;
   let ans=KB.find(x=>x.k.includes('default')).a;
   for(let i of KB){if(i.k.some(k=>v.includes(k))){ans=i.a;break}}
-  setTimeout(()=>{document.getElementById('chat').innerHTML+=`<div class="msg bot">${ans} <button onclick="speak('${ans}')">🔊</button></div>`;speak(ans)},400);
+  setTimeout(()=>{document.getElementById('chatBox').innerHTML+=`<div class="msg bot">${ans} <button onclick="speak('${ans}')">🔊</button></div>`;speak(ans)},400);
   document.getElementById('q').value='';
 }
 
-// 11 مواقيت
-function showPrayer(){let c=prompt('المدينة؟ 6 اكتوبر او Orlando'); alert(c.includes('Orlando')?'Orlando: الفجر 5:15':'6 اكتوبر: الفجر 4:30')}
-// 12 قبلة
-function showQibla(){let c=prompt('المدينة؟'); alert(c.includes('Orlando')?'58 درجة شمال شرق':'136 درجة جنوب شرق')}
-// 13 زكاة
-function showZakat(){let m=prompt('معاك كام؟'); if(m) alert('الزكاة: '+(m*0.025).toFixed(2))}
-// 14 اسماء
-function showNames(){alert('الله الرحمن الرحيم الملك القدوس...99 اسم')}
-// 15 دعاء
-function showDua(){let d=prompt('دعاء لايه؟'); alert(DUAS[d]||'اللهم يسر امرك')}
-
-// 2 تحدي حفظ
-function startQuiz(){alert('اكمل: بسم الله الرحمن... \nالاجابة: الرحيم. +20 نقطة')}
-// 3 فتوى سريعة
-function fastFatwa(){if(confirm('هل الصلاة فرض؟')) alert('صح! +1 حسنة')}
-// 4 قصة
-function story(){document.getElementById('chat').innerHTML+=`<div class="msg bot"><b>قصة اليوم: ابو بكر الصديق</b><br>كان اول من اسلم... العبرة: الصدق</div>`}
-// 5 اطفال
-function kidsMode(){alert('تم تفعيل وضع الاطفال: اجابات مبسطة + صور كارتون')}
-// 1 ساعة اجابة
-function answerHour(){alert('ساعة الاجابة: بين الاذان والاقامة. ادعي دلوقتي!')}
-
-// 6 بحث قران
-function searchQuran(){let w=prompt('ابحث عن كلمة'); alert(`تم العثور على 10 ايات فيها ${w}`)}
-// 7 ختمة
-function khatma(){alert('تم تقسيم الختمة: انت الجزء 1-5')}
-// 8 تفسير
-function tafsir(){let a=prompt('اية؟'); alert('تفسير مبسط: الله يأمرنا بالاحسان')}
-// 9 ورد
-function wird(){alert('وردك اليوم:
+function zikr(x){alert(AZ[x]);speak(AZ[x])}
+function showDua(x){alert(DUAS[x]);speak(DUAS[x])}
+function showPrayer(){alert('الفجر 4:30')}
+function showQibla(){alert('136 درجة')}
+function showZakat(){let m=prompt('معاك كام؟'); if(m) alert(m*0.025)}
+function showNames(){alert('99 اسم')}
+function searchQuran(){alert('ابحث عن اية')}
+function smartKhatma(){alert('اختم في 10 ايام')}
+function wird(){alert('وردك 2 جزء')}
+function startQuiz(){alert('سؤال: كم اركان الاسلام؟')}
+function dailyQuiz(){alert('5 اسئلة')}
+function story(){alert('قصة ابو بكر')}
+function startVoice(){let r=new webkitSpeechRecognition(); r.lang='ar-EG'; r.onresult=e=>{document.getElementById('q').value=e.results[0][0].transcript;send()}; r.start()}
+</script>
+</body>
+</html>
