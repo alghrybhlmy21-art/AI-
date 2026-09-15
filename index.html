@@ -3,236 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الشيخ AI المتحرك - حلمي الغريب</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        body { background: #000; overflow: hidden; color: white; }
-        
-        /* الخلفية المتحركة */
-        .bg { position: fixed; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #0d5c63 0%, #000 100%); }
-        .light { position: absolute; width: 4px; height: 4px; background: #44a1a0; border-radius: 50%; animation: fall 10s infinite linear; box-shadow: 0 0 10px #44a1a0; }
-        @keyframes fall { 0% { transform: translateY(-100px); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(100vh); opacity: 0; } }
-        
-        .container { position: relative; z-index: 10; max-width: 900px; margin: 0 auto; padding: 20px; }
-        
-        /* الشيخ المتحرك */
-        .sheikh { text-align: center; margin: 30px 0; animation: glow 2s infinite alternate; }
-        .sheikh-emoji { font-size: 120px; display: inline-block; animation: float 3s infinite ease-in-out; }
-        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        @keyframes glow { 0% { text-shadow: 0 0 10px #44a1a0; } 100% { text-shadow: 0 0 40px #44a1a0, 0 0 60px #0d5c63; } }
-        
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { font-size: 40px; color: #44a1a0; }
-        
-        /* الاسئلة الطايرة */
-        .floating-questions { position: fixed; width: 100%; height: 100%; pointer-events: none; }
-        .q-bubble { position: absolute; background: rgba(68,161,160,0.3); border: 2px solid #44a1a0; padding: 10px 20px; border-radius: 30px; font-size: 14px; animation: bubble 15s infinite linear; }
-        @keyframes bubble { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100px) scale(1.2); opacity: 0; } }
-        
-        /* الشات */
-        .chat-box { background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); border: 2px solid #44a1a0; border-radius: 25px; padding: 20px; height: 400px; overflow-y: auto; margin-bottom: 20px; }
-        .message { margin: 15px 0; padding: 15px; border-radius: 15px; animation: pop 0.5s; }
-        @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        .user { background: linear-gradient(90deg, #44a1a0, #0d5c63); margin-left: 15%; }
-        .bot { background: linear-gradient(90deg, #ff9800, #ff5722); margin-right: 15%; }
-        
-        .input-area { display: flex; gap: 10px; }
-        input { flex: 1; padding: 18px; border: 3px solid #44a1a0; border-radius: 15px; font-size: 18px; background: rgba(0,0,0,0.5); color: white; }
-        button { padding: 18px 40px; background: linear-gradient(90deg, #44a1a0, #0d5c63); color: white; border: none; border-radius: 15px; cursor: pointer; font-size: 18px; font-weight: 900; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-    </style>
-</head>
-<body>
-    function sendMessage() {
-    const input = document.getElementById('userInput');
-    const chatBox = document.getElementById('chatBox');
-    const q = input.value.trim();
-    if(q === '') return;
-
-    // 1. ضيف سؤال المستخدم
-    chatBox.innerHTML += `<div class="message user-msg">${q}</div>`;
-    input.value = '';
-
-    // 2. انزل تحت فورا بعد سؤالك
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    let ans = knowledgeBase.find(x => x.key.includes('default')).ans;
-    for(let item of knowledgeBase) {
-        if(item.key.some(k => q.includes(k))) { ans = item.ans; break; }
-    }
-
-    // 3. بعد ما الرد يجي انزل تحت تاني
-    setTimeout(() => {
-        chatBox.innerHTML += `<div class="message bot-msg">${ans}</div>`;
-        chatBox.scrollTop = chatBox.scrollHeight; // دي اهم سطر
-    }, 600);
-}
-    <div class="bg" id="bg"></div>
-    <div class="floating-questions" id="floatQ"></div>
-
-    <div class="container">
-        <div class="sheikh">
-            <div class="sheikh-emoji">🧔🤖</div>
-            <h2 style="color:#44a1a0">الشيخ AI ينورلك الطريق</h2>
-        </div>
-
-        <div class="header">
-            <h1>اسأل الشيخ الذكي</h1>
-            <p>مقدم من: حلمي الغريب - الازهر الشريف</p>
-        </div>
-
-        <div class="chat-box" id="chatBox">
-            <div class="message bot">السلام عليكم ورحمة الله 👋 انا الشيخ AI المتحرك. اسألني وهتلاقي الدنيا بتنور</div>
-        </div>
-
-        <div class="input-area">
-            <input type="text" id="userInput" placeholder="اكتب سؤالك هنا...">
-            <button onclick="sendMessage()">ارسال ✨</button>
-        </div>
-    </div>
-
-    <script>
-        // عمل انوار بتقع
-        for(let i=0; i<50; i++) {
-            let light = document.createElement('div');
-            light.className = 'light';
-            light.style.left = Math.random()*100 + '%';
-            light.style.animationDelay = Math.random()*10 + 's';
-            document.getElementById('bg').appendChild(light);
-        }
-
-        // اسئلة طايرة
-        const sampleQ = ['ما حكم الصلاة؟', 'كيف اتوب؟', 'فضل القران؟', 'حكم الزكاة؟', 'بر الوالدين؟'];
-        setInterval(() => {
-            let bubble = document.createElement('div');
-            bubble.className = 'q-bubble';
-            bubble.textContent = sampleQ[Math.floor(Math.random()*sampleQ.length)];
-            bubble.style.left = Math.random()*80 + '%';
-            bubble.style.animationDuration = 10 + Math.random()*10 + 's';
-            document.getElementById('floatQ').appendChild(bubble);
-            setTimeout(() => bubble.remove(), 20000);
-        }, 3000);
-
-        // قاعدة الاسئلة
-        const knowledgeBase = [
-            {key: ['صلاة'], ans: 'الصلاة نور. <br> قال تعالى: ان الصلاة كانت على المؤمنين كتابا موقوتا'},
-            {key: ['صيام'], ans: 'الصيام يهذب النفس.<br> قال تعالى: كتب عليكم الصيام'},
-            {key: ['زكاة'], ans: 'الزكاة تطهر المال. نسبتها 2.5%'},
-            {key: ['توبة'], ans: 'باب التوبة مفتوح 24 ساعة.<br> قال تعالى: لا تقنطوا من رحمة الله'},
-            {key: ['default'], ans: 'سؤال قيم. انصحك بسؤال علماء الازهر.<br> قال تعالى: فاسألوا اهل الذكر'}
-        ];
-
-        function sendMessage() {
-            const input = document.getElementById('userInput');
-            const chatBox = document.getElementById('chatBox');
-            const question = input.value.trim();
-            if(question === '') return;
-
-            chatBox.innerHTML += `<div class="message user">${question}</div>`;
-            input.value = '';
-
-            let answer = knowledgeBase.find(x => x.key.includes('default')).ans;
-            for(let item of knowledgeBase) {
-                if(item.key.some(k => question.includes(k))) { answer = item.ans; break; }
-            }
-
-            setTimeout(() => {
-                chatBox.innerHTML += `<div class="message bot">✨ ${answer}</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }, 800);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        document.getElementById('userInput').addEventListener('keypress', e => { if(e.key === 'Enter') sendMessage(); });
-    </script><!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الشيخ AI Pro - حلمي الغريب</title>
+    <title>الشيخ AI - حلمي الغريب | الازهر الشريف</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --grad1: #667eea;
-            --grad2: #764ba2;
-            --glass: rgba(255,255,255,0.1);
+            --grad1: #0d5c63;
+            --grad2: #44a1a0;
+            --gold: #ffc107;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
         body { 
-            background: linear-gradient(135deg, var(--grad1), var(--grad2)); 
-            min-height: 100vh; 
-            padding: 20px;
+            background: linear-gradient(135deg, var(--grad1), var(--grad2));
+            min-height: 100vh;
+            padding: 15px;
         }
 
-        /* كارت زجاجي */
-        .glass-card {
-            background: var(--glass);
+        /* انوار متحركة في الخلفية */
+        .particles { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+        .particle { position:absolute; width:3px; height:3px; background:var(--gold); border-radius:50%; animation:fall 12s infinite linear; opacity:0.6; }
+        @keyframes fall { 0%{transform:translateY(-100px)} 100%{transform:translateY(100vh)} }
+
+        .container { max-width: 1100px; margin: 0 auto; position: relative; z-index: 2; }
+
+        .header {
+            background: rgba(255,255,255,0.1);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 25px;
+            text-align: center;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0.3);
+            animation: glow 3s infinite alternate;
+        }
+        @keyframes glow { from{box-shadow:0 0 20px rgba(68,161,160,0.5)} to{box-shadow:0 0 40px rgba(68,161,160,0.8)} }
+
+        .header h1 { font-size: 42px; font-weight: 900; color: white; }
+        .header p { color: #e0f2f1; font-size: 18px; margin-top: 10px; }
+        .sheikh-emoji { font-size: 80px; animation: float 3s infinite ease-in-out; }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
+
+        .main { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+        
+        .chat-card, .side-card {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 25px;
+            padding: 25px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
-        .header {
-            text-align: center;
-            padding: 30px;
-            margin-bottom: 25px;
-        }
-        .header h1 {
-            font-size: 45px;
-            font-weight: 900;
-            background: linear-gradient(90deg, #fff, #a18cd1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 3s infinite;
-        }
-        @keyframes shine { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.5); } }
-
-        .main-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 25px;
-        }
-
-        .chat-area { padding: 25px; }
         .chat-box {
-            height: 500px;
+            height: 520px;
             overflow-y: auto;
-            padding: 15px;
+            padding: 10px;
             margin-bottom: 20px;
         }
-        .chat-box::-webkit-scrollbar { width: 8px; }
-        .chat-box::-webkit-scrollbar-thumb { background: var(--grad1); border-radius: 10px; }
+        .chat-box::-webkit-scrollbar { width: 10px; }
+        .chat-box::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
 
         .message {
-            padding: 18px;
-            border-radius: 20px;
-            margin: 15px 0;
-            max-width: 80%;
+            padding: 16px 20px;
+            border-radius: 18px;
+            margin: 12px 0;
+            max-width: 85%;
+            line-height: 1.8;
+            font-size: 17px;
             animation: slideIn 0.4s ease;
         }
-        @keyframes slideIn { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .user-msg { background: linear-gradient(135deg, var(--grad1), var(--grad2)); margin-right: auto; }
-        .bot-msg { background: rgba(255,255,255,0.15); margin-left: auto; }
+        @keyframes slideIn { from{transform:translateX(30px);opacity:0} to{transform:translateX(0);opacity:1} }
+        .user-msg { background: linear-gradient(135deg, var(--grad1), var(--grad2)); color: white; margin-right: auto; }
+        .bot-msg { background: rgba(255,255,255,0.9); color: #333; margin-left: auto; }
+        .ayah { color: var(--grad1); font-weight: 700; display: block; margin-top: 8px; }
 
         .input-area { display: flex; gap: 12px; }
         input {
             flex: 1;
-            padding: 20px;
-            border: none;
+            padding: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
             border-radius: 15px;
             background: rgba(255,255,255,0.9);
             font-size: 17px;
         }
         .send-btn {
-            padding: 20px 45px;
+            padding: 18px 40px;
             border: none;
             border-radius: 15px;
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-            color: white;
+            background: linear-gradient(135deg, var(--gold), #ff9800);
+            color: #000;
             font-size: 18px;
             font-weight: 900;
             cursor: pointer;
@@ -240,13 +99,11 @@
         }
         .send-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
 
-        /* الشريط الجانبي */
-        .sidebar { padding: 25px; }
-        .sidebar h3 { color: white; margin-bottom: 15px; font-size: 22px; }
+        .side-card h3 { color: white; font-size: 22px; margin-bottom: 15px; }
         .quick-btn {
             width: 100%;
-            padding: 15px;
-            margin: 10px 0;
+            padding: 14px;
+            margin: 8px 0;
             border: none;
             border-radius: 12px;
             background: rgba(255,255,255,0.15);
@@ -255,38 +112,125 @@
             transition: 0.3s;
             text-align: right;
             font-size: 16px;
+            font-weight: 700;
         }
-        .quick-btn:hover { background: rgba(255,255,255,0.3); transform: translateX(-5px); }
+        .quick-btn:hover { background: rgba(255,255,255,0.3); transform: translateX(-8px); }
 
-        @media(max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+        @media(max-width: 950px) { .main { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <div class="glass-card header">
-        <h1>🤖 الشيخ AI Pro</h1>
-        <p style="color:white; font-size:18px;">مقدم من: حلمي الغريب - الازهر الشريف</p>
-    </div>
-
-    <div class="main-grid">
-        <div class="glass-card chat-area">
-            <div class="chat-box" id="chatBox">
-                <div class="message bot-msg">
-                    السلام عليكم 👋<br>
-                    انا النسخة الجديدة من الشيخ AI. اسألني اي سؤال
-                </div>
-            </div>
-            <div class="input-area">
-                <input type="text" id="userInput" placeholder="اسأل سؤالك الديني هنا...">
-                <button class="send-btn" onclick="sendMessage()">ارسال</button>
-            </div>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="sheikh-emoji">🧔🤖</div>
+            <h1>الشيخ AI الذكي</h1>
+            <p>مقدم من: حلمي الغريب - خادم القرآن بالأزهر الشريف</p>
         </div>
 
-        <div class="glass-card sidebar">
-            <h3>📚 اسئلة سريعة</h3>
-            <button class="quick-btn" onclick="ask('ما حكم الصلاة؟')">حكم الصلاة</button>
-            <button class="quick-btn" onclick="ask('كيف اتوب الى الله؟')">كيف اتوب</button>
-            <button class="quick-btn" onclick="ask('ما فضل قراءة القران؟')">فضل القران</button>
-            <button class="quick-btn" onclick="ask('ما هي اركان الاسلام؟')">اركان الاسلام</button>
-            <button class="quick-btn" onclick="ask('حكم الزكاة؟')">حكم الزكاة</
+        <div class="main">
+            <div class="chat-card">
+                <div class="chat-box" id="chatBox">
+                    <div class="message bot-msg">
+                        السلام عليكم ورحمة الله وبركاته 👋<br>
+                        انا الشيخ AI. اسألني في اي مسألة دينية وهجاوبك بالدليل
+                    </div>
+                </div>
+                <div class="input-area">
+                    <input type="text" id="userInput" placeholder="اكتب سؤالك هنا... مثال: ما حكم الغيبة">
+                    <button class="send-btn" onclick="sendMessage()">ارسال</button>
+                </div>
+            </div>
+
+            <div class="side-card">
+                <h3>📚 اسئلة سريعة</h3>
+                <button class="quick-btn" onclick="ask('ما حكم الصلاة؟')">حكم الصلاة</button>
+                <button class="quick-btn" onclick="ask('كيف اتوب الى الله؟')">كيف اتوب</button>
+                <button class="quick-btn" onclick="ask('ما فضل قراءة القران؟')">فضل القران</button>
+                <button class="quick-btn" onclick="ask('ما هي اركان الاسلام؟')">اركان الاسلام</button>
+                <button class="quick-btn" onclick="ask('حكم الزكاة؟')">حكم الزكاة</button>
+                <button class="quick-btn" onclick="ask('حكم الصيام في السفر؟')">الصيام في السفر</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // عمل انوار في الخلفية
+        for(let i=0; i<40; i++) {
+            let p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random()*100 + '%';
+            p.style.animationDelay = Math.random()*12 + 's';
+            document.getElementById('particles').appendChild(p);
+        }
+
+        // قاعدة بيانات 50 سؤال
+        const knowledgeBase = [
+            {key: ['صلاة','الصلاة'], ans: 'الصلاة عماد الدين واول ما يحاسب عليه العبد.<span class="ayah">قال تعالى: ان الصلاة كانت على المؤمنين كتابا موقوتا</span>'},
+            {key: ['صيام','الصيام'], ans: 'الصيام فرض في رمضان. للمريض والمسافر رخصة.<span class="ayah">فمن كان منكم مريضا او على سفر فعدة من ايام اخر</span>'},
+            {key: ['زكاة','الزكاة'], ans: 'الزكاة ركن. نصابها 2.5% من المال الذي حال عليه الحول وبلغ النصاب.'},
+            {key: ['حج','الحج'], ans: 'الحج ركن على المستطيع مرة في العمر.'},
+            {key: ['توبة','التوبة'], ans: 'شروط التوبة: الاقلاع والندم والعزم.<span class="ayah">قل يا عبادي الذين اسرفوا لا تقنطوا من رحمة الله</span>'},
+            {key: ['والدين','الوالدين'], ans: 'بر الوالدين واجب بعد عبادة الله.<span class="ayah">وبالوالدين احسانا</span>'},
+            {key: ['قران','القرآن'], ans: 'قراءة القران شفاء ولك بكل حرف 10 حسنات.<span class="ayah">وننزل من القران ما هو شفاء</span>'},
+            {key: ['دعاء','الدعاء'], ans: 'الدعاء مخ العبادة. ادعو الله وانتم موقنون بالاجابة.'},
+            {key: ['غيبة','الغيبة'], ans: 'الغيبة حرام وهي ذكر اخاك بما يكره.<span class="ayah">ايحب احدكم ان ياكل لحم اخيه ميتا</span>'},
+            {key: ['ربا','الربا'], ans: 'الربا من الكبائر.<span class="ayah">واحل الله البيع وحرم الربا</span>'},
+            {key: ['كذب','الكذب'], ans: 'الكذب من صفات المنافقين. اية المنافق ثلاث: اذا حدث كذب'},
+            {key: ['وضوء','الوضوء'], ans: 'الوضوء شرط لصحة الصلاة. اركانه 6.'},
+            {key: ['جمعة','الجمعة'], ans: 'صلاة الجمعة فرض على كل مسلم بالغ عاقل.'},
+            {key: ['حسد','الحسد'], ans: 'الحسد مذموم. استعذ بالله من شر الحاسدين.'},
+            {key: ['صدقة','الصدقة'], ans: 'الصدقة تطفئ غضب الرب وتزيد المال.'},
+            {key: ['طلاق','الطلاق'], ans: 'الطلاق ابغض الحلال. لا تطلق الا عند الضرورة.'},
+            {key: ['زواج','الزواج'], ans: 'الزواج سنة. اظفر بذات الدين تربت يداك.'},
+            {key: ['جنة','الجنة'], ans: 'في الجنة ما لا عين رأت ولا اذن سمعت.'},
+            {key: ['نار','النار'], ans: 'النار حق. اللهم اجرنا من النار.'},
+            {key: ['قدر','القدر'], ans: 'الايمان بالقدر خيره وشره من الله.'},
+            {key: ['صبر','الصبر'], ans: 'انما يوفى الصابرون اجرهم بغير حساب.'},
+            {key: ['شكر','الشكر'], ans: 'لئن شكرتم لازيدنكم. احمد الله دائما.'},
+            {key: ['ظلم','الظلم'], ans: 'الظلم ظلمات يوم القيامة. اتق دعوة المظلوم.'},
+            {key: ['امانة','الامانة'], ans: 'ادوا الامانات الى اهلها. الامانة من الايمان.'},
+            {key: ['علم','العلم'], ans: 'طلب العلم فريضة على كل مسلم.'},
+            {key: ['ذكر','الذكر'], ans: 'الا بذكر الله تطمئن القلوب.'},
+            {key: ['استغفار','الاستغفار'], ans: 'استغفر الله يرزقك من حيث لا تحتسب.'},
+            {key: ['موت','الموت'], ans: 'كل نفس ذائقة الموت. اكثروا من ذكر هادم اللذات.'},
+            {key: ['رزق','الرزق'], ans: 'الرزق على الله. وما من دابة في الارض الا على الله رزقها'},
+            {key: ['default'], ans: 'سؤالك مهم. انصحك بمراجعة اهل العلم من الازهر الشريف.<span class="ayah">فاسألوا اهل الذكر ان كنتم لا تعلمون</span>'}
+        ];
+
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const chatBox = document.getElementById('chatBox');
+            const q = input.value.trim();
+            if(q === '') return;
+
+            // اضافة سؤال المستخدم
+            chatBox.innerHTML += `<div class="message user-msg">${q}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight; // ينزل تحت
+
+            // البحث عن الاجابة
+            let ans = knowledgeBase.find(x => x.key.includes('default')).ans;
+            for(let item of knowledgeBase) {
+                if(item.key.some(k => q.includes(k))) { ans = item.ans; break; }
+            }
+
+            // اضافة رد الشيخ بعد ثانية
+            setTimeout(() => {
+                chatBox.innerHTML += `<div class="message bot-msg">${ans}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight; // ينزل تحت تاني
+            }, 700);
+        }
+        
+        function ask(q) {
+            document.getElementById('userInput').value = q;
+            sendMessage();
+        }
+
+        document.getElementById('userInput').addEventListener('keypress', e => { 
+            if(e.key === 'Enter') sendMessage(); 
+        });
+    </script>
 </body>
 </html>
