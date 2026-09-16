@@ -2,168 +2,57 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>الشيخ AI DESIGN - حلمي الغريب</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الشيخ AI PRO MAX ULTRA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--g1:#0d5c63;--g2:#44a1a0;--gold:#ffc107}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal'}
-body{background:linear-gradient(135deg,var(--g1),var(--g2));min-height:100vh;padding:10px;color:#fff;transition:0.5s}
-
-/* الحواف بتنور */
-.container{border:3px solid var(--gold);border-radius:25px;padding:15px;animation:borderGlow 2s infinite}
-@keyframes borderGlow{0%,100%{box-shadow:0 0 15px var(--gold), inset 0 0 15px var(--gold)}50%{box-shadow:0 0 30px #fff, inset 0 0 30px #fff}}
-
-.header{text-align:center;padding:20px;position:relative}
-.header h1{font-size:34px;font-weight:900;text-shadow:0 0 10px var(--gold)}
-/* زرار ليلي نهاري فوق */
-.theme-btn{position:absolute;left:0;top:0;background:var(--gold);border:none;border-radius:50%;width:50px;height:50px;font-size:24px;cursor:pointer}
-
-/* الاستيكرات بتتحرك */
-.sticker{position:fixed;font-size:40px;animation:float 4s ease-in-out infinite;opacity:0.3;z-index:-1}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
-.s1{top:10%;right:5%}.s2{top:50%;left:3%;animation-delay:1s}.s3{bottom:10%;right:10%;animation-delay:2s}
-
-.main-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}
-.big-btn{background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border:2px solid var(--gold);border-radius:20px;padding:25px;text-align:center;cursor:pointer;transition:0.4s;font-size:20px;font-weight:900}
-.big-btn:hover{transform:scale(1.08);background:rgba(255,255,255,0.25);box-shadow:0 0 25px var(--gold)}
-
-.chat-box{height:300px;overflow-y:auto;background:rgba(0,0,0,0.2);border-radius:15px;padding:15px;margin:15px 0}
-.msg{padding:12px;border-radius:12px;margin:8px 0}
-.user{background:var(--g1);width:80%;margin-right:auto}
-.bot{background:#fff;color:#000;width:80%;margin-left:auto;border-left:4px solid var(--gold)}
-input{width:70%;padding:14px;border:none;border-radius:12px}
-button{padding:14px;border:none;border-radius:12px;background:var(--gold);font-weight:900;cursor:pointer}
-.mic{background:#ff5722;color:#fff}
-
-.dark{background:#0a0a0a!important;filter:invert(1) hue-rotate(180deg)}
-.page{display:none}
-.page.active{display:block}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif}
+body{background:#0f4c4c;color:#fff;min-height:100vh}
+.main-header{background:linear-gradient(135deg,#0f3d3d,#1a6b6b);border:2px solid #facc15;border-radius:20px;margin:15px;padding:18px;text-align:center;box-shadow:0 0 20px rgba(250,204,21,.3)}
+.main-header h1{font-size:26px;font-weight:800}
+.main-header p{color:#facc15;font-size:13px;margin-top:6px;font-weight:700}
+.container{display:flex;gap:10px;padding:0 12px 12px;max-width:1200px;margin:auto}
+.right-chat{background:#f8fafc;border-radius:20px;width:90px;padding:10px;display:flex;flex-direction:column;justify-content:space-between;min-height:80vh}
+.chat-msg{background:#fff;color:#111;padding:10px;border-radius:14px;font-size:12px;line-height:1.5}
+.chat-controls{margin-top:15px;display:flex;flex-direction:column;gap:8px}
+.chat-controls button{border:none;border-radius:12px;padding:10px;font-weight:700;cursor:pointer}
+.btn-bn{background:#e2e8f0}.btn-send{background:#facc15}.btn-mic{background:#ff5722;color:#fff;font-size:18px}
+.left-content{flex:1}
+.section-title{color:#facc15;font-weight:800;margin:18px 8px 10px}
+.btn-card{background:rgba(255,255,255,.15);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.1);padding:14px;border-radius:14px;color:#fff;font-weight:700;cursor:pointer;text-align:center;font-size:14px}
+.panel{display:none;background:#fff;color:#111;border-radius:16px;padding:18px;margin-top:12px}
+.panel.show{display:block}
+.prayer-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #ddd}
+.qibla-compass{width:180px;height:180px;border:4px solid #0f4c4c;border-radius:50%;margin:20px auto;display:flex;align-items:center;justify-content:center}
 </style>
 </head>
-<body id="body">
-
-<!-- استيكرات دينية بتتحرك -->
-<div class="sticker s1">📿</div>
-<div class="sticker s2">🕌</div>
-<div class="sticker s3">🌙</div>
-
-<div class="container">
-  <div class="header">
-    <button class="theme-btn" onclick="toggleTheme()">🌙</button>
-    <h1>🧔🤖 الشيخ AI</h1>
-    <p>مقدم من: حلمي الغريب</p>
-  </div>
-
-  <!-- الصفحة الرئيسية - ازرار -->
-  <div id="home" class="page active">
-    <div class="main-grid">
-      <div class="big-btn" onclick="showPage('chat')">💬 الاسئلة والفتاوى</div>
-      <div class="big-btn" onclick="showPage('azkar')">🤲 الاذكار</div>
-      <div class="big-btn" onclick="showPage('quran')">📖 القرآن</div>
-      <div class="big-btn" onclick="showPage('dua')">🙏 الدعوات</div>
-      <div class="big-btn" onclick="showPage('tools')">⚡ ادوات اسلامية</div>
-      <div class="big-btn" onclick="showPage('games')">🏆 العاب وتحدي</div>
-    </div>
-  </div>
-
-  <!-- صفحة الاسئلة -->
-  <div id="chat" class="page">
-    <button onclick="showPage('home')">⬅️ رجوع</button>
-    <h2>اسأل الشيخ AI</h2>
-    <div class="chat-box" id="chatBox">
-      <div class="msg bot">السلام عليكم اسألني</div>
-    </div>
-    <input id="q" placeholder="اكتب سؤالك">
-    <button onclick="send()">ارسال</button>
-    <button class="mic" onclick="startVoice()">🎤</button>
-  </div>
-
-  <!-- صفحة الاذكار -->
-  <div id="azkar" class="page">
-    <button onclick="showPage('home')">⬅️ رجوع</button>
-    <h2>🤲 الاذكار</h2>
-    <button onclick="zikr('صباح')">اذكار الصباح</button>
-    <button onclick="zikr('مساء')">اذكار المساء</button>
-    <button onclick="zikr('نوم')">اذكار النوم</button>
-  </div>
-
-  <!-- صفحة القران -->
-  <div id="quran" class="page">
-    <button onclick="showPage('home')">⬅️ رجوع</button>
-    <h2>📖 القرآن</h2>
-    <button onclick="searchQuran()">البحث في القران</button>
-    <button onclick="smartKhatma()">ختمة ذكية</button>
-    <button onclick="wird()">ورد اليوم</button>
-  </div>
-
-  <!-- صفحة الدعوات -->
-  <div id="dua" class="page">
-    <button onclick="showPage('home')">⬅️ رجوع</button>
-    <h2>🙏 الدعوات</h2>
-    <button onclick="showDua('السفر')">دعاء السفر</button>
-    <button onclick="showDua('الهم')">دعاء الهم</button>
-    <button onclick="showDua('الركوب')">دعاء الركوب</button>
-  </div>
-
-  <!-- صفحة الادوات -->
-  <div id="tools" class="page">
-    <button onclick="showPage('home')">⬅️ رجوع</button>
-    <h2>⚡ ادوات اسلامية</h2>
-    <button onclick="showPrayer()">مواقيت الصلاة</button>
-    <button onclick="showQibla()">اتجاه القبلة</button>
-    <button onclick="showZakat()">حاسبة الزكاة</button>
-    <button onclick="showNames()">اسماء الله الحسنى</button>
-  </div>
-
-  <!-- صفحة الالعاب -->
-  <div id="games" class="page">
-    <button onclick="showPage('home')">⬅️ رجوع</button>
-    <h2>🏆 العاب وتحدي</h2>
-    <button onclick="startQuiz()">تحدي الحفظ</button>
-    <button onclick="dailyQuiz()">اختبر معلوماتك</button>
-    <button onclick="story()">قصة وعبرة</button>
-  </div>
-
+<body>
+<div class="main-header">
+<h1>🤖 الشيخ AI PRO<br>MAX ULTRA</h1>
+<p>مقدم من: حلمي الغريب - خادم القرآن بالأزهر | 25 ميزة</p>
 </div>
+<div class="container">
+<div class="left-content">
+<div class="section-title">⚡ الحياة اليومية</div>
+<div class="btn-card" onclick="openPanel('prayer')">11. مواقيت الصلاة</div>
+<div id="prayer" class="panel"><h3>🕌 مواقيت الصلاة - أسيوط</h3><div id="prayerTimes">جاري التحميل...</div><button class="btn-card" style="background:#0f4c4c;color:#fff;margin-top:10px" onclick="loadPrayer()">تحديث</button></div>
 
+<div class="btn-card" style="margin-top:8px" onclick="openPanel('qibla')">12. اتجاه القبلة</div>
+<div id="qibla" class="panel"><h3>🧭 القبلة</h3><div class="qibla-compass"><div id="qiblaArrow" style="font-size:50px">🕋⬆️</div></div><p id="qiblaText" style="text-align:center;font-weight:700">القبلة: 136°</p><button class="btn-card" style="background:#0f4c4c;color:#fff" onclick="startQibla()">تفعيل البوصلة</button></div>
+
+<div class="btn-card" style="margin-top:8px" onclick="openPanel('zakat')">13. حاسبة الزكاة</div>
+<div id="zakat" class="panel"><input id="zakatInput" type="number" placeholder="المبلغ بالجنيه"><button class="btn-card" style="background:#0f4c4c;color:#fff" onclick="calcZakat()">احسب</button><div id="zakatRes" style="margin-top:10px;font-weight:800;text-align:center;background:#fef9c3;padding:10px;border-radius:8px"></div></div>
+</div>
+<div class="right-chat">
+<div class="chat-msg">السلام عليكم 👋<br>جاهز؟ عندنا 25 ميزة</div>
+<div class="chat-controls"><button class="btn-bn">بنه</button><button class="btn-send">ارسال</button><button class="btn-mic">🎤</button></div>
+</div>
+</div>
 <script>
-const KB=[{k:['صلاة'],a:'الصلاة عماد الدين'},{k:['default'],a:'ارجع لاهل العلم'}];
-const AZ={صباح:'اصبحنا واصبح الملك لله',مساء:'امسينا وامسى الملك لله',نوم:'باسمك ربي وضعت جنبي'};
-const DUAS={'السفر':'سبحان الذي سخر لنا','الهم':'اللهم اني اعوذ بك من الهم','الركوب':'بسم الله'};
-
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function toggleTheme(){
-  document.getElementById('body').classList.toggle('dark');
-  document.querySelector('.theme-btn').innerText = document.getElementById('body').classList.contains('dark')?'☀️':'🌙';
-}
-
-function speak(t){let u=new SpeechSynthesisUtterance(t);u.lang='ar-SA';speechSynthesis.speak(u)}
-function send(){
-  let v=document.getElementById('q').value; if(!v)return;
-  document.getElementById('chatBox').innerHTML+=`<div class="msg user">${v}</div>`;
-  let ans=KB.find(x=>x.k.includes('default')).a;
-  for(let i of KB){if(i.k.some(k=>v.includes(k))){ans=i.a;break}}
-  setTimeout(()=>{document.getElementById('chatBox').innerHTML+=`<div class="msg bot">${ans} <button onclick="speak('${ans}')">🔊</button></div>`;speak(ans)},400);
-  document.getElementById('q').value='';
-}
-
-function zikr(x){alert(AZ[x]);speak(AZ[x])}
-function showDua(x){alert(DUAS[x]);speak(DUAS[x])}
-function showPrayer(){alert('الفجر 4:30')}
-function showQibla(){alert('136 درجة')}
-function showZakat(){let m=prompt('معاك كام؟'); if(m) alert(m*0.025)}
-function showNames(){alert('99 اسم')}
-function searchQuran(){alert('ابحث عن اية')}
-function smartKhatma(){alert('اختم في 10 ايام')}
-function wird(){alert('وردك 2 جزء')}
-function startQuiz(){alert('سؤال: كم اركان الاسلام؟')}
-function dailyQuiz(){alert('5 اسئلة')}
-function story(){alert('قصة ابو بكر')}
-function startVoice(){let r=new webkitSpeechRecognition(); r.lang='ar-EG'; r.onresult=e=>{document.getElementById('q').value=e.results[0][0].transcript;send()}; r.start()}
+function openPanel(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('show'));document.getElementById(id).classList.add('show');}
+async function loadPrayer(){try{let res=await fetch('https://api.aladhan.com/v1/timingsByCity?city=Asyut&country=Egypt&method=5');let data=await res.json();let t=data.data.timings;document.getElementById('prayerTimes').innerHTML=`<div class="prayer-row"><span>الفجر</span><b>${t.Fajr}</b></div><div class="prayer-row"><span>الظهر</span><b>${t.Dhuhr}</b></div><div class="prayer-row"><span>العصر</span><b>${t.Asr}</b></div><div class="prayer-row"><span>المغرب</span><b>${t.Maghrib}</b></div><div class="prayer-row"><span>العشاء</span><b>${t.Isha}</b></div>`;}catch(e){document.getElementById('prayerTimes').innerText='فشل التحميل';}} loadPrayer();
+function calcZakat(){let m=parseFloat(document.getElementById('zakatInput').value);if(!m)return;if(m<300000){document.getElementById('zakatRes').innerText=`لم يبلغ النصاب`;return;}document.getElementById('zakatRes').innerText=`الزكاة: ${(m*0.025).toFixed(2)} جنيه`;}
+function startQibla(){window.addEventListener('deviceorientation',e=>{let h=e.webkitCompassHeading||(360-e.alpha);document.getElementById('qiblaArrow').style.transform=`rotate(${136-h}deg)`;},true);alert('لف الموبايل');}
 </script>
 </body>
 </html>
